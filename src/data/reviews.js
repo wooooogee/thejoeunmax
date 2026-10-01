@@ -1,42 +1,35 @@
-export const reviewsData = [
+export const consultingCasesData = [
   {
-    id: 'rev-1',
-    author: '김*호 고객님',
-    category: '보험 보장분석',
-    rating: 5,
-    title: '매달 나가는 보험료 20만원을 아꼈습니다!',
-    content: '무분별하게 가입되어 있던 중복 보험을 깔끔하게 정리해주시고 필요한 뇌/심장 보장은 더 든든하게 챙겨주셨어요. 친절한 설명과 전문성에 감동했습니다.',
+    id: 'case-1',
+    caseNo: 'CASE 01',
+    category: '라이프케어',
+    title: '하이브리드698과 프리미엄540 차이 상담',
+    summary: '상조 보장 범위 및 만기 환급, 라이프 전환 혜택 비중 비교 안내',
+    details: '가족을 생각한 상조 준비와 함께 추후 크루즈 여행 및 헬스케어로 100% 전환 가능한 상품 구조를 비교 분석하여 제안해드렸습니다.',
     date: '2026.09.28',
-    serviceUsed: '신한라이프 연계 보장분석'
+    interestParam: 'life'
   },
   {
-    id: 'rev-2',
-    author: '이*정 고객님',
-    category: '크루즈 여행',
-    rating: 5,
-    title: '부모님 환갑 선물로 크루즈 여행 다녀왔어요',
-    content: '상조 상품 포인트를 크루즈 여행으로 전환해서 이용했습니다. 짐 쌀 필요 없이 가이드분께서 전 일정 보살펴주셔서 부모님이 너무 좋아하셨어요.',
+    id: 'case-2',
+    caseNo: 'CASE 02',
+    category: '보험',
+    title: '기존 가입 보험 보장분석 사례',
+    summary: '중복 가입된 실손 및 운전자 특약 정리, 부족한 3대 질병 진단비 보강',
+    details: '월 납입 보험료 대비 부족했던 암·뇌·심장 질환 보장을 신한라이프 연계 1:1 맞춤 진단을 통해 재설계 도와드렸습니다.',
     date: '2026.09.20',
-    serviceUsed: '여행먼저 동남아 크루즈'
+    interestParam: 'insurance'
   },
   {
-    id: 'rev-3',
-    author: '박*훈 대표님',
-    category: 'MAX BUSINESS',
-    rating: 5,
-    title: '요양원 홍보영상 제작 후 입소 문의가 3배 늘었습니다',
-    content: '유튜브 영상 제작부터 브랜드 소개까지 깔끔하게 제작해주셨습니다. 시설의 장점을 영상으로 정확히 전달해 주셔서 실제 고객 방문 문의가 크게 증가했습니다.',
+    id: 'case-3',
+    caseNo: 'CASE 03',
+    category: '크루즈',
+    title: '첫 크루즈 여행 및 출항 일정 상담',
+    summary: '동남아 기항지 투어 구성 및 전선 인솔자 동행 관련 가이드',
+    details: '처음 떠나는 크루즈 여행객을 위해 선내 식사, 복장 준비물, 기항지 주요 동선을 영상 콘텐츠와 함께 안내해 드렸습니다.',
     date: '2026.09.10',
-    serviceUsed: '요양원 전문 홍보영상 제작'
-  },
-  {
-    id: 'rev-4',
-    author: '최*희 고객님',
-    category: '더좋은하이브리드698',
-    rating: 5,
-    title: '영상을 보고 신청했는데 혜택이 너무 좋네요',
-    content: 'MAX CLASS 유튜브 영상을 통해 하이브리드698의 만기 혜택과 전환 서비스 내용을 쉽게 이해할 수 있었습니다. 부담 없이 상담받고 가입 완료했습니다.',
-    date: '2026.09.02',
-    serviceUsed: '더좋은하이브리드698'
+    interestParam: 'cruise'
   }
 ];
+
+// Re-export for compatibility
+export const reviewsData = consultingCasesData;

@@ -1,52 +1,71 @@
-export const servicesData = [
+export const needsData = [
   {
     id: 'life',
-    name: '라이프케어',
-    shortDesc: '상조, 웨딩, 헬스케어부터 하이브리드 라이프 서비스까지 한눈에 확인하세요.',
-    fullDesc: '인생의 중요한 순간을 케어하는 더좋은하이브리드698 및 더좋은프리미엄540 맞춤형 토탈 라이프 솔루션을 제공합니다.',
-    icon: 'HeartHandshake',
+    categoryTag: 'LIFE CARE',
+    question: '가족을 위해 미리 준비하고 싶어요',
+    description: '상조서비스와 헬스케어, 생활 혜택을 함께 확인해보세요.',
+    relatedProducts: ['더좋은하이브리드698', '더좋은프리미엄540'],
+    btnText: '라이프케어 알아보기',
     link: '/life',
-    badge: '인기 서비스',
-    color: 'from-blue-600 to-indigo-800'
+    ctaLink: '/contact?interest=life',
+    ctaText: '상품 구성 확인하기',
+    secondaryCtaText: '두 상품 비교하기',
+    icon: 'HeartHandshake',
+    color: 'border-blue-200 hover:border-blue-400'
   },
   {
     id: 'insurance',
-    name: '보험 / 보장분석',
-    shortDesc: '전문가 맞춤 보장분석과 맞춤형 보험설계 솔루션을 제공해 드립니다.',
-    fullDesc: '신한라이프 연계 맞춤 보험 설계 및 내 보험의 부족한 점을 꼼꼼하게 분석해 드리는 1:1 보장분석 서비스입니다.',
-    icon: 'ShieldCheck',
+    categoryTag: 'INSURANCE',
+    question: '내 보험, 제대로 가입되어 있을까요?',
+    description: '현재 보험료와 보장을 확인하고 중복되거나 부족한 부분을 점검해보세요.',
+    relatedProducts: ['신한라이프 1:1 보장분석'],
+    btnText: '무료 보장분석',
     link: '/insurance',
-    badge: '전문 상담',
-    color: 'from-emerald-600 to-teal-800'
+    ctaLink: '/contact?interest=insurance',
+    ctaText: '무료 보장분석 신청',
+    icon: 'ShieldCheck',
+    color: 'border-emerald-200 hover:border-emerald-400'
   },
   {
     id: 'cruise',
-    name: '크루즈',
-    shortDesc: '여행먼저 크루즈와 함께 꿈꾸던 럭셔리 크루즈 여행을 미리 만나보세요.',
-    fullDesc: '풍부한 수경 영상 콘텐츠와 최신 출항 일정 안내로 안전하고 럭셔리한 낭만적인 크루즈 여행을 경험하세요.',
-    icon: 'Ship',
+    categoryTag: 'CRUISE',
+    question: '크루즈 여행이 궁금해요',
+    description: '여행 영상부터 실제 일정까지 크루즈 여행을 쉽게 알아보세요.',
+    relatedProducts: ['여행먼저 크루즈', '기항지 투어'],
+    btnText: '크루즈 알아보기',
     link: '/cruise',
-    badge: '럭셔리 여행',
-    color: 'from-cyan-600 to-blue-800'
+    ctaLink: '/contact?interest=cruise',
+    ctaText: '출항 일정 확인하기',
+    secondaryCtaText: '크루즈 상담',
+    icon: 'Ship',
+    color: 'border-cyan-200 hover:border-cyan-400'
   },
   {
     id: 'golf',
-    name: '골프',
-    shortDesc: '원포인트 스윙 교정과 골프 레슨 영상으로 실력을 향상시키세요.',
-    fullDesc: '체계적인 골프 레슨, 스윙 교정 팁, 필드 라운딩 영상 콘텐츠 등 골퍼를 위한 전문 콘텐츠를 제공합니다.',
-    icon: 'Trophy',
+    categoryTag: 'GOLF',
+    question: '골프 실력을 제대로 늘리고 싶어요',
+    description: '스윙 교정부터 필드 레슨까지 골프 콘텐츠와 레슨을 확인해보세요.',
+    relatedProducts: ['스윙교정 영상', '필드 레슨'],
+    btnText: '골프 레슨 알아보기',
     link: '/golf',
-    badge: '콘텐츠 특화',
-    color: 'from-amber-600 to-orange-800'
+    ctaLink: '/contact?interest=golf',
+    ctaText: '골프 레슨 상담',
+    icon: 'Trophy',
+    color: 'border-amber-200 hover:border-amber-400'
   },
   {
     id: 'business',
-    name: '비즈니스 홍보',
-    shortDesc: '요양원, 요양교육원, 골프장, 자영업자를 위한 영상 제작 솔루션입니다.',
-    fullDesc: 'MAX BUSINESS 홍보영상 제작 서비스로 매장을 알리고 매출을 상승시키는 전문 유튜브 콘텐츠를 제작합니다.',
-    icon: 'Video',
+    categoryTag: 'BUSINESS',
+    question: '우리 사업장을 더 알리고 싶어요',
+    description: '유튜브와 숏폼 영상으로 사업장의 강점을 콘텐츠로 만들어드립니다.',
+    relatedProducts: ['요양원/골프장 홍보영상', '자영업자 미디어'],
+    btnText: '영상 제작 알아보기',
     link: '/business',
-    badge: '맞춤 제작',
-    color: 'from-purple-600 to-indigo-900'
+    ctaLink: '/contact?interest=business',
+    ctaText: '우리 사업장 영상 상담',
+    icon: 'Video',
+    color: 'border-purple-200 hover:border-purple-400'
   }
 ];
+
+export const servicesData = needsData;

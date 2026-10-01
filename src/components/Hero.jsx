@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PlayCircle, ArrowRight, ShieldCheck, Award, Sparkles } from 'lucide-react';
+import { PlayCircle, Search, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function Hero() {
-  const scrollToServices = () => {
-    const elem = document.getElementById('quick-menu');
+  const scrollToNeeds = () => {
+    const elem = document.getElementById('needs');
+    if (elem) {
+      elem.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToMaxClass = () => {
+    const elem = document.getElementById('max-class');
     if (elem) {
       elem.scrollIntoView({ behavior: 'smooth' });
     }
@@ -20,10 +27,12 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto space-y-6">
           
-          {/* Top Badge */}
-          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-amber-400/30 text-amber-300 text-xs sm:text-sm font-semibold tracking-wide shadow-inner">
-            <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-            <span>맥스지사 통합 영업 & 미디어 플랫폼</span>
+          {/* Top Subtitle Badge */}
+          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-slate-800/90 border border-amber-400/30 text-amber-300 text-xs font-extrabold tracking-wider uppercase shadow-inner">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>THE JOEUN MAX</span>
+            <span className="text-slate-500">|</span>
+            <span className="text-slate-300">LIFE CONTENT & CONSULTING PLATFORM</span>
           </div>
 
           {/* Main Headline */}
@@ -34,46 +43,40 @@ export default function Hero() {
 
           {/* Subcopy */}
           <p className="text-base sm:text-lg md:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto">
-            상조 · 건강 · 보험 · 여행 · 골프 · 비즈니스까지 <br className="hidden sm:inline" />
-            필요한 서비스를 영상으로 먼저 알아보고 편하게 상담받아보세요.
+            상조 · 보험 · 크루즈 · 골프 · 비즈니스 홍보까지 <br className="hidden sm:inline" />
+            복잡한 설명은 영상으로 먼저 알아보고 나에게 필요한 서비스만 편하게 상담받아보세요.
           </p>
 
           {/* CTA Buttons */}
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              to="/contact"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-bold text-slate-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 rounded-xl shadow-lg shadow-amber-500/25 hover:brightness-110 transform hover:-translate-y-0.5 transition-all"
+            <button
+              onClick={scrollToNeeds}
+              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-extrabold text-slate-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 rounded-xl shadow-lg shadow-amber-500/25 hover:brightness-110 transform hover:-translate-y-0.5 transition-all cursor-pointer"
             >
-              무료 상담 신청
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
+              <Search className="w-5 h-5 mr-2" />
+              관심 서비스 찾기
+            </button>
 
             <button
-              onClick={scrollToServices}
-              className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 text-base font-medium text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 rounded-xl transition-all"
+              onClick={scrollToMaxClass}
+              className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 text-base font-bold text-slate-200 bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 rounded-xl transition-all cursor-pointer"
             >
               <PlayCircle className="w-5 h-5 mr-2 text-amber-400" />
-              서비스 둘러보기
+              영상 먼저 보기
             </button>
           </div>
 
-          {/* Key Selling Features (Trust Badges) */}
-          <div className="pt-10 grid grid-cols-3 gap-2 sm:gap-6 border-t border-slate-800/80 max-w-xl mx-auto text-xs sm:text-sm text-slate-300">
-            <div className="flex flex-col items-center p-2">
-              <Award className="w-6 h-6 text-amber-400 mb-1" />
-              <span className="font-bold text-white">프리미엄 서비스</span>
-              <span className="text-[11px] text-slate-400">맞춤 라이프 솔루션</span>
-            </div>
-            <div className="flex flex-col items-center p-2 border-x border-slate-800">
-              <PlayCircle className="w-6 h-6 text-amber-400 mb-1" />
-              <span className="font-bold text-white">영상 First</span>
-              <span className="text-[11px] text-slate-400">MAX CLASS 설명</span>
-            </div>
-            <div className="flex flex-col items-center p-2">
-              <ShieldCheck className="w-6 h-6 text-amber-400 mb-1" />
-              <span className="font-bold text-white">안심 전문 상담</span>
-              <span className="text-[11px] text-slate-400">1:1 맞춤 보장 분석</span>
-            </div>
+          {/* Bottom Keywords */}
+          <div className="pt-10 border-t border-slate-800/80 flex flex-wrap justify-center items-center gap-2 sm:gap-4 text-xs font-bold text-slate-400 tracking-wider">
+            <span className="px-3 py-1 bg-slate-900 rounded-full border border-slate-800">LIFE CARE</span>
+            <span className="text-slate-600">•</span>
+            <span className="px-3 py-1 bg-slate-900 rounded-full border border-slate-800">INSURANCE</span>
+            <span className="text-slate-600">•</span>
+            <span className="px-3 py-1 bg-slate-900 rounded-full border border-slate-800">CRUISE</span>
+            <span className="text-slate-600">•</span>
+            <span className="px-3 py-1 bg-slate-900 rounded-full border border-slate-800">GOLF</span>
+            <span className="text-slate-600">•</span>
+            <span className="px-3 py-1 bg-slate-900 rounded-full border border-slate-800">BUSINESS</span>
           </div>
 
         </div>

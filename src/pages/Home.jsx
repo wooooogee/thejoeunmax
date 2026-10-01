@@ -1,111 +1,217 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import SectionTitle from '../components/SectionTitle';
-import ServiceCard from '../components/ServiceCard';
 import VideoCard from '../components/VideoCard';
+import MaxPicks from '../components/MaxPicks';
 import ConsultationCTA from '../components/ConsultationCTA';
 
-import { servicesData } from '../data/services';
+import { needsData } from '../data/services';
 import { videosData } from '../data/videos';
 import { productsData } from '../data/products';
 import { cruisesData } from '../data/cruises';
-import { reviewsData } from '../data/reviews';
+import { consultingCasesData } from '../data/reviews';
 
-import { ArrowRight, Star, HeartHandshake, ShieldCheck, Ship, Trophy, Video, PlayCircle, CheckCircle2 } from 'lucide-react';
+import { 
+  ArrowRight, 
+  HeartHandshake, 
+  ShieldCheck, 
+  Ship, 
+  Trophy, 
+  Video, 
+  PlayCircle, 
+  CheckCircle2,
+  HelpCircle,
+  FileText,
+  UserCheck,
+  Zap,
+  Layers
+} from 'lucide-react';
+
+const iconMap = {
+  HeartHandshake: HeartHandshake,
+  ShieldCheck: ShieldCheck,
+  Ship: Ship,
+  Trophy: Trophy,
+  Video: Video,
+};
 
 export default function Home() {
+  const [selectedFilter, setSelectedFilter] = useState('전체');
+
+  // Filter videos based on category
+  const filteredVideos = selectedFilter === '전체' 
+    ? videosData 
+    : videosData.filter(v => v.category === selectedFilter);
+
+  const filterOptions = ['전체', '라이프케어', '보험', '크루즈', '골프', '비즈니스'];
+
   return (
     <div className="bg-slate-50 min-h-screen">
       
       {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2. Service Quick Menu Section */}
-      <section id="quick-menu" className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 2. Customer Needs Question Cards Section (#needs) */}
+      <section id="needs" className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle
-          badge="통합 솔루션"
-          title="맥스지사 5대 핵심 라이프 & 비즈니스"
-          subtitle="당신의 삶에 필요한 프리미엄 서비스와 맞춤 콘텐츠를 경험하세요."
+          badge="FIND YOUR INTEREST"
+          title="지금 어떤 정보가 궁금하세요?"
+          subtitle="상품명부터 찾지 않아도 괜찮습니다. 궁금한 분야부터 편하게 확인해보세요."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {servicesData.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {needsData.map((item) => {
+            const IconComponent = iconMap[item.icon] || HelpCircle;
+            return (
+              <div 
+                key={item.id}
+                className={`bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl transition-all duration-300 border ${item.color} flex flex-col justify-between group transform hover:-translate-y-1`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="px-3 py-1 text-xs font-black rounded-full bg-slate-900 text-amber-400">
+                      {item.categoryTag}
+                    </span>
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center group-hover:bg-amber-400 group-hover:text-slate-950 transition-colors">
+                      <IconComponent className="w-5 h-5" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 leading-snug group-hover:text-slate-950">
+                    "{item.question}"
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                    {item.description}
+                  </p>
+
+                  {item.relatedProducts && (
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {item.relatedProducts.map((p, idx) => (
+                        <span key={idx} className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-md">
+                          ✓ {p}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <Link
+                    to={item.link}
+                    className="inline-flex items-center text-sm font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors"
+                  >
+                    <span>[{item.btnText}]</span>
+                    <ArrowRight className="w-4 h-4 ml-1 text-amber-500 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* 3. MAX CLASS (Featured Video Content Section) */}
-      <section className="py-16 md:py-24 bg-slate-950 text-white relative">
+      {/* 3. MAX CLASS (Featured Video Content Section) [Moved right after Needs Selection] */}
+      <section id="max-class" className="py-16 md:py-24 bg-slate-950 text-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
           <SectionTitle
-            badge="MAX CLASS"
-            title="영상으로 미리 보는 맞춤 미디어 콘텐츠"
-            subtitle="궁금한 서비스를 영상으로 쉽고 명쾌하게 설명해 드립니다."
+            badge="WATCH FIRST"
+            title="설명 듣기 전에 영상으로 먼저 확인하세요"
+            subtitle="복잡한 상품과 서비스를 짧은 영상으로 쉽게 설명합니다."
             light={true}
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {videosData.slice(0, 3).map((video) => (
+
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap justify-center items-center gap-2 mb-10">
+            {filterOptions.map((opt) => (
+              <button
+                key={opt}
+                onClick={() => setSelectedFilter(opt)}
+                className={`px-4 py-2 text-xs sm:text-sm font-bold rounded-xl border transition-all cursor-pointer ${
+                  selectedFilter === opt
+                    ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md shadow-amber-400/20'
+                    : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
+                }`}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+
+          {/* Video Grid (At least 4 videos) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredVideos.map((video) => (
               <VideoCard key={video.id} video={video} />
             ))}
           </div>
+
           <div className="mt-12 text-center">
             <Link
               to="/class"
-              className="inline-flex items-center px-6 py-3 bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold rounded-xl border border-slate-800 transition-colors"
+              className="inline-flex items-center px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-amber-400 font-extrabold text-sm rounded-xl border border-slate-800 transition-colors"
             >
-              <span>더 많은 MAX CLASS 영상 보기</span>
+              <span>[MAX CLASS 전체보기]</span>
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 4. Life Care Section */}
+      {/* 4. MAX PICKS Section (Newly Added Editorial Section) */}
+      <MaxPicks />
+
+      {/* 5. Life Care Section */}
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-100 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-200 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-5 space-y-4">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold">
               <HeartHandshake className="w-4 h-4 text-blue-600" />
-              <span>라이프케어 솔루션</span>
+              <span>LIFE CARE</span>
             </div>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-              상조부터 전환 혜택까지 <br />
-              <span className="text-amber-600">더좋은 라이프 서비스</span>
+              상조부터 100% 라이프 전환까지 <br />
+              <span className="text-amber-600">더좋은 라이프케어 플랜</span>
             </h3>
             <p className="text-slate-600 text-sm leading-relaxed">
-              더좋은하이브리드698과 더좋은프리미엄540을 통해 든든한 상조 보장은 물론, 웨딩/크루즈/골프 등 필요한 순간 원하는 서비스로 100% 라이프 전환이 가능합니다.
+              더좋은하이브리드698과 더좋은프리미엄540을 통해 든든한 상조 보장은 물론, 원하는 라이프 서비스로 100% 자율 전환이 가능합니다.
             </p>
-            <div className="pt-2 flex flex-wrap gap-3">
+            
+            {/* Custom Action Buttons for Life Care */}
+            <div className="pt-4 flex flex-wrap gap-3">
               <Link
-                to="/life/hybrid698"
-                className="px-4 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-colors"
+                to="/contact?interest=life"
+                className="px-5 py-3 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-xs rounded-xl shadow hover:brightness-110 transition-all"
               >
-                더좋은하이브리드698
+                [상품 구성 확인하기]
               </Link>
               <Link
-                to="/life/premium540"
-                className="px-4 py-2.5 bg-slate-100 text-slate-900 font-bold text-xs rounded-xl hover:bg-slate-200 transition-colors"
+                to="/life"
+                className="px-5 py-3 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-colors"
               >
-                더좋은프리미엄540
+                [두 상품 비교하기]
               </Link>
             </div>
           </div>
+
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {productsData.filter(p => p.category === '라이프케어').map((prod) => (
-              <div key={prod.id} className="bg-slate-50 rounded-2xl p-6 border border-slate-200/80 hover:border-amber-400 transition-colors">
-                <span className="text-xs font-bold text-amber-600 bg-amber-100 px-2.5 py-0.5 rounded">{prod.name}</span>
-                <h4 className="text-base font-bold text-slate-900 mt-2">{prod.tagline}</h4>
-                <ul className="mt-3 space-y-1.5 text-xs text-slate-600">
-                  {prod.features.map((feat, idx) => (
-                    <li key={idx} className="flex items-center">
-                      <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-emerald-600 shrink-0" />
-                      {feat}
-                    </li>
-                  ))}
-                </ul>
-                <Link to={prod.link} className="mt-4 block text-xs font-bold text-slate-900 hover:text-amber-600">
-                  상세보기 &rarr;
+              <div key={prod.id} className="bg-slate-50 rounded-2xl p-6 border border-slate-200/90 hover:border-amber-400 transition-colors flex flex-col justify-between">
+                <div>
+                  <span className="text-xs font-bold text-amber-600 bg-amber-100 px-2.5 py-0.5 rounded">{prod.name}</span>
+                  <h4 className="text-base font-bold text-slate-900 mt-2">{prod.tagline}</h4>
+                  <ul className="mt-3 space-y-1.5 text-xs text-slate-600">
+                    {prod.features.map((feat, idx) => (
+                      <li key={idx} className="flex items-center">
+                        <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-emerald-600 shrink-0" />
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Link to={`/contact?interest=life`} className="mt-4 block text-xs font-bold text-slate-900 hover:text-amber-600">
+                  상담 신청하기 &rarr;
                 </Link>
               </div>
             ))}
@@ -113,70 +219,77 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Insurance & Analysis Section */}
+      {/* 6. Insurance Section */}
       <section className="py-16 md:py-24 bg-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-bold rounded-full mb-3">
-                신한라이프 연계 보장분석
+              <span className="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-bold rounded-full mb-3 uppercase">
+                INSURANCE
               </span>
               <h3 className="text-2xl sm:text-4xl font-extrabold mb-4 leading-snug">
-                새어나가는 보험료는 잡고 <br />
-                <span className="gold-gradient-text">보장은 든든하게 MAX!</span>
+                내 보험, 제대로 가입되어 있을까요? <br />
+                <span className="gold-gradient-text">신한라이프 1:1 보장분석</span>
               </h3>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-                복잡한 보험 증권도 간편하게 분석해 드립니다. 전문 보장분석 시스템을 통해 중복되는 보장은 줄이고, 꼭 필요한 보장 위주로 1:1 맞춤 설계를 제안합니다.
+                매달 나가는 보험료 중 중복되는 항목은 줄이고, 부족한 암·뇌·심장 진단비 보장은 꼼꼼하게 채워드립니다.
               </p>
-              <div className="space-y-3 mb-8 text-xs sm:text-sm text-slate-200">
-                <div className="flex items-center space-x-2">
-                  <ShieldCheck className="w-5 h-5 text-amber-400" />
-                  <span>신한라이프 맞춤 보험 설계 & 1:1 진단</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <ShieldCheck className="w-5 h-5 text-amber-400" />
-                  <span>암·뇌·심장 3대 질병 집중 보장 분석</span>
-                </div>
-              </div>
+              
+              {/* Differentiated CTA for Insurance */}
               <Link
-                to="/insurance"
-                className="inline-flex items-center px-6 py-3 bg-amber-400 text-slate-950 font-extrabold text-sm rounded-xl hover:bg-amber-300 transition-colors"
+                to="/contact?interest=insurance"
+                className="inline-flex items-center px-6 py-3.5 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 text-slate-950 font-black text-sm rounded-xl shadow-lg hover:brightness-110 transition-all"
               >
-                보험 보장분석 신청하기
+                [무료 보장분석 신청]
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </div>
+
             <div className="bg-slate-800 rounded-3xl p-8 border border-slate-700 space-y-4">
-              <h4 className="text-lg font-bold text-amber-400">보장분석 대표 서비스</h4>
+              <h4 className="text-lg font-bold text-amber-400">보장분석 핵심 점검 포인트</h4>
               <div className="p-4 bg-slate-900 rounded-xl border border-slate-700/80">
-                <h5 className="font-bold text-white text-sm">1. 기존 가입 보험 전체 진단</h5>
-                <p className="text-xs text-slate-400 mt-1">부족하거나 과다 청구되는 항목을 정밀하게 추출합니다.</p>
+                <h5 className="font-bold text-white text-sm">1. 중복 가입 보험 정리</h5>
+                <p className="text-xs text-slate-400 mt-1">쓸데없이 두 번 내는 보험료를 파악하여 절감해 드립니다.</p>
               </div>
               <div className="p-4 bg-slate-900 rounded-xl border border-slate-700/80">
-                <h5 className="font-bold text-white text-sm">2. 맞춤형 리모델링 제안</h5>
-                <p className="text-xs text-slate-400 mt-1">동일 보험료 대비 보장 범위를 최대화하는 포트폴리오를 제공합니다.</p>
-              </div>
-              <div className="p-4 bg-slate-900 rounded-xl border border-slate-700/80">
-                <h5 className="font-bold text-white text-sm">3. 1:1 무료 상담 및 청구 지원</h5>
-                <p className="text-xs text-slate-400 mt-1">전문 상담사가 직접 1:1로 가이드해드립니다.</p>
+                <h5 className="font-bold text-white text-sm">2. 3대 질병 진단비 보강</h5>
+                <p className="text-xs text-slate-400 mt-1">암, 뇌혈관, 허혈성 심장질환 보장 범위 정밀 진단</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Cruise Section */}
+      {/* 7. Cruise Section */}
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionTitle
-          badge="여행먼저 크루즈"
-          title="꿈꾸던 럭셔리 크루즈 여행"
-          subtitle="짐을 싸고 푸는 불편 없이, 바다 위 5성급 호텔에서 맞이하는 특별한 휴식."
-        />
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+          <div>
+            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">CRUISE</span>
+            <h2 className="text-2xl md:text-4xl font-extrabold text-slate-900 mt-1">
+              여행 영상부터 출항 일정까지
+            </h2>
+          </div>
+          <div className="mt-4 md:mt-0 flex space-x-3">
+            <Link
+              to="/cruise"
+              className="px-4 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-colors"
+            >
+              [출항 일정 확인하기]
+            </Link>
+            <Link
+              to="/contact?interest=cruise"
+              className="px-4 py-2.5 bg-amber-400 text-slate-950 font-black text-xs rounded-xl hover:bg-amber-300 transition-colors"
+            >
+              [크루즈 상담]
+            </Link>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {cruisesData.map((c) => (
-            <div key={c.id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-100 flex flex-col justify-between">
-              <div className="h-48 relative overflow-hidden">
-                <img src={c.image} alt={c.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            <div key={c.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between">
+              <div className="h-48 relative">
+                <img src={c.image} alt={c.title} loading="lazy" className="w-full h-full object-cover" />
                 <span className="absolute top-3 right-3 px-2.5 py-1 bg-slate-900/90 text-amber-400 text-xs font-bold rounded">
                   {c.ship}
                 </span>
@@ -188,9 +301,8 @@ export default function Home() {
                   <p className="text-xs text-slate-500">{c.period}</p>
                 </div>
                 <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-bold text-amber-600">{c.price}</span>
-                  <Link to="/cruise" className="text-xs font-bold text-slate-900 hover:text-amber-600">
-                    상세 일정 &rarr;
+                  <Link to="/contact?interest=cruise" className="text-xs font-extrabold text-amber-600 hover:underline">
+                    상담 문의 &rarr;
                   </Link>
                 </div>
               </div>
@@ -199,48 +311,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. Golf & MAX Business Section Grid */}
+      {/* 8. Golf & Business Section */}
       <section className="py-16 md:py-24 bg-slate-100 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           
-          {/* Golf */}
+          {/* Golf Card */}
           <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200 flex flex-col justify-between">
             <div>
-              <div className="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center mb-4">
-                <Trophy className="w-6 h-6" />
-              </div>
-              <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded">골프 콘텐츠 & 레슨</span>
-              <h3 className="text-2xl font-bold text-slate-900 mt-3 mb-2">골프 레슨 · 스윙 교정 미디어</h3>
+              <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded">GOLF</span>
+              <h3 className="text-2xl font-bold text-slate-900 mt-3 mb-2">골프 스윙 교정 & 레슨</h3>
               <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                골프 원포인트 레슨 영상부터 필드 가이드까지! 골퍼들을 위한 실용적인 콘텐츠를 감상하세요.
+                드라이버 비거리 향상 및 원포인트 스윙 분석 영상 콘텐츠와 레슨 솔루션.
               </p>
             </div>
             <Link
-              to="/golf"
-              className="inline-flex items-center text-sm font-bold text-slate-900 hover:text-amber-600"
+              to="/contact?interest=golf"
+              className="inline-flex items-center px-5 py-3 bg-slate-900 text-amber-400 font-black text-xs rounded-xl hover:bg-slate-800 transition-colors w-fit"
             >
-              <span>골프 영상 둘러보기</span>
+              <span>[골프 레슨 상담]</span>
               <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
           </div>
 
-          {/* MAX BUSINESS */}
+          {/* MAX BUSINESS Card */}
           <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-md border border-slate-800 flex flex-col justify-between">
             <div>
-              <div className="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center mb-4 border border-purple-500/30">
-                <Video className="w-6 h-6" />
-              </div>
-              <span className="text-xs font-bold text-purple-300 bg-purple-900/50 px-2.5 py-1 rounded">MAX BUSINESS</span>
-              <h3 className="text-2xl font-bold text-white mt-3 mb-2">홍보영상 제작 솔루션</h3>
+              <span className="text-xs font-bold text-purple-300 bg-purple-900/50 px-2.5 py-1 rounded">BUSINESS</span>
+              <h3 className="text-2xl font-bold text-white mt-3 mb-2">사업자 유튜브 & 홍보영상 제작</h3>
               <p className="text-sm text-slate-300 leading-relaxed mb-6">
-                요양원, 요양교육원, 골프장, 자영업자를 위한 전문 고화질 유튜브 홍보영상 제작 및 미디어 마케팅 지원.
+                요양원, 요양교육원, 골프장, 자영업 사장님을 위한 유튜브 영상 제작 및 브랜드 홍보.
               </p>
             </div>
             <Link
-              to="/business"
-              className="inline-flex items-center text-sm font-bold text-amber-400 hover:text-amber-300"
+              to="/contact?interest=business"
+              className="inline-flex items-center px-5 py-3 bg-amber-400 text-slate-950 font-black text-xs rounded-xl hover:bg-amber-300 transition-colors w-fit"
             >
-              <span>비즈니스 영상 제작 문의</span>
+              <span>[우리 사업장 영상 상담]</span>
               <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
           </div>
@@ -248,36 +354,81 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. Customer Reviews Section */}
+      {/* 9. CONSULTING CASE (Real Consulting Cases replacing generic fake reviews) */}
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle
-          badge="고객 후기"
-          title="맥스지사 이용 고객들의 생생한 후기"
-          subtitle="실제 서비스를 경험하신 고객님들의 솔직한 평가입니다."
+          badge="CONSULTING CASE"
+          title="실제 상담 진행 사례"
+          subtitle="고객님의 궁금증과 상황에 맞춰 진행된 1:1 맞춤 상담 사례입니다."
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {reviewsData.map((rev) => (
-            <div key={rev.id} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex text-amber-400 space-x-1">
-                  {[...Array(rev.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {consultingCasesData.map((c) => (
+            <div key={c.id} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/90 flex flex-col justify-between space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-black text-amber-600 bg-amber-100 px-2.5 py-0.5 rounded">
+                    {c.caseNo}
+                  </span>
+                  <span className="text-xs text-slate-400 font-semibold">{c.category}</span>
                 </div>
-                <span className="text-xs text-slate-400">{rev.date}</span>
+                <h4 className="text-base font-bold text-slate-900 mt-2">{c.title}</h4>
+                <p className="text-xs font-semibold text-slate-700 mt-1">{c.summary}</p>
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed">{c.details}</p>
               </div>
-              <h4 className="text-base font-bold text-slate-900">{rev.title}</h4>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{rev.content}</p>
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-                <span className="font-semibold text-slate-700">{rev.author}</span>
-                <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600">{rev.serviceUsed}</span>
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span className="text-slate-400">{c.date}</span>
+                <Link to={`/contact?interest=${c.interestParam}`} className="font-bold text-slate-900 hover:text-amber-600">
+                  유사 사례 상담신청 &rarr;
+                </Link>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 9. Consultation CTA Section */}
+      {/* 10. WHY THE JOEUN MAX? (Value Proposition Section) */}
+      <section className="py-16 md:py-24 bg-slate-900 text-white border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionTitle
+            badge="WHY THE JOEUN MAX?"
+            title="한 번에 판매하기보다 먼저 이해할 수 있도록 돕습니다."
+            subtitle="THE JOEUN MAX가 고객과 소통하는 4가지 약속"
+            light={true}
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 text-left">
+              <span className="text-2xl font-black text-amber-400 mb-2 block">01</span>
+              <h4 className="font-bold text-white text-base mb-2">영상으로 먼저 확인</h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                복잡한 설명을 상담받기 전 콘텐츠로 명쾌하게 미리 확인하실 수 있습니다.
+              </p>
+            </div>
+            <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 text-left">
+              <span className="text-2xl font-black text-amber-400 mb-2 block">02</span>
+              <h4 className="font-bold text-white text-base mb-2">관심 분야만 선택</h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                필요 없는 상품까지 볼 필요 없이 나에게 진짜 필요한 서비스부터 확인합니다.
+              </p>
+            </div>
+            <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 text-left">
+              <span className="text-2xl font-black text-amber-400 mb-2 block">03</span>
+              <h4 className="font-bold text-white text-base mb-2">상담으로 바로 연결</h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                영상으로 먼저 이해한 뒤 궁금한 부분만 1:1 맞춤 상담으로 해결합니다.
+              </p>
+            </div>
+            <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 text-left">
+              <span className="text-2xl font-black text-amber-400 mb-2 block">04</span>
+              <h4 className="font-bold text-white text-base mb-2">다양한 라이프 서비스</h4>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                라이프케어부터 보험, 여행, 골프, 비즈니스 미디어까지 한곳에서 연결합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. Final Integrated Consultation CTA */}
       <ConsultationCTA />
 
     </div>

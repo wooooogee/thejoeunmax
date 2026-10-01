@@ -1,18 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SectionTitle from '../components/SectionTitle';
 import { Phone, Mail, Clock, Send, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export default function Contact() {
+  const [searchParams] = useSearchParams();
+  const interestParam = searchParams.get('interest');
+
+  // Map interest parameter to category string
+  const categoryMap = {
+    life: '라이프케어 (상조/전환)',
+    insurance: '보험 보장분석',
+    cruise: '여행먼저 크루즈',
+    golf: '골프 레슨 콘텐츠',
+    business: 'MAX BUSINESS 홍보영상',
+  };
+
+  const initialCategory = categoryMap[interestParam] || '라이프케어 (상조/전환)';
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    category: '라이프케어 (상조/전환)',
+    category: initialCategory,
     time: '상관없음',
     message: '',
     agree: true
   });
 
   const [submitted, setSubmitted] = useState(false);
+
+  // Update category if interestParam changes
+  useEffect(() => {
+    if (interestParam && categoryMap[interestParam]) {
+      setFormData(prev => ({ ...prev, category: categoryMap[interestParam] }));
+    }
+  }, [interestParam]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,13 +49,13 @@ export default function Contact() {
     <div className="pt-24 min-h-screen bg-slate-50">
       
       {/* Banner */}
-      <section className="bg-slate-900 text-white py-16 px-4 sm:px-6 lg:px-8 text-center relative">
+      <section className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 text-center relative">
         <div className="max-w-4xl mx-auto space-y-4">
-          <span className="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-bold rounded-full border border-amber-500/30">
+          <span className="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-bold rounded-full border border-amber-500/30 uppercase tracking-wider">
             FREE CONSULTATION
           </span>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white">
-            1:1 <span className="gold-gradient-text">무료 상담 신청</span>
+            1:1 <span className="gold-gradient-text">무료 맞춤 상담 신청</span>
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
             관심 있는 분야를 선택해 상담 신청을 남겨주시면 전담 수석 상담사가 친절하게 안내해 드립니다.
@@ -56,7 +78,8 @@ export default function Contact() {
                   <Phone className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-white">대표 전화</strong>
-                    <span>1544-XXXX (연락처 준비중)</span>
+                    {/* Placeholder phone number */}
+                    <span>1544-XXXX (대표번호 주석: 준비중)</span>
                   </div>
                 </div>
 
@@ -96,12 +119,12 @@ export default function Contact() {
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900">상담 신청이 완료되었습니다!</h3>
                 <p className="text-sm text-slate-600 max-w-md mx-auto">
-                  접수해주신 내용을 바탕으로 전담 상담사가 빠른 시간 내에 연락드리겠습니다. 감사합니다.
+                  접수해주신 <span className="font-bold text-amber-600">[{formData.category}]</span> 분야 내용을 바탕으로 전담 상담사가 빠른 시간 내에 연락드리겠습니다.
                 </p>
                 <button
                   onClick={() => {
                     setSubmitted(false);
-                    setFormData({ name: '', phone: '', category: '라이프케어 (상조/전환)', time: '상관없음', message: '', agree: true });
+                    setFormData({ name: '', phone: '', category: initialCategory, time: '상관없음', message: '', agree: true });
                   }}
                   className="mt-4 px-6 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800"
                 >
@@ -124,7 +147,7 @@ export default function Contact() {
                     <option value="여행먼저 크루즈">여행먼저 럭셔리 크루즈 여행</option>
                     <option value="골프 레슨 콘텐츠">골프 레슨 & 스윙 교정</option>
                     <option value="MAX BUSINESS 홍보영상">MAX BUSINESS 홍보영상 제작</option>
-                    <option value="기타 문의">기타 제휴 및 상담 문의</option>
+                    <option value="기타 문의">기타 제휴 및 통합 상담 문의</option>
                   </select>
                 </div>
 
@@ -179,7 +202,7 @@ export default function Contact() {
                   </label>
                   <textarea
                     rows={3}
-                    placeholder="궁금하신 내용을 간단히 남겨주시면 더욱 정확한 상담이 가능합니다."
+                    placeholder="궁금하신 내용을 남겨주시면 더욱 정밀한 상담이 가능합니다."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-amber-500"
@@ -200,7 +223,7 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-base rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2"
+                  className="w-full py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-base rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   <Send className="w-5 h-5" />
                   <span>무료 상담 신청하기</span>
